@@ -14,13 +14,14 @@
 
 ### -Hacker có thể làm gì :  
 -Lỗ hổng OS command injection có thể cho phép kẻ tấn công thực hiện các hành vi như: 
-	+Thực thi lệnh hệ thống. 
+   +Thực thi lệnh hệ thống. 
 	
-	+Làm tổn hại tới ứng dụng, server chạy ứng dụng cũng như dữ liệu trên đó. 
+   +Làm tổn hại tới ứng dụng, server chạy ứng dụng cũng như dữ liệu trên đó. 
 	
-	+Thực hiện SSRF. 
+   +Thực hiện SSRF: SSRF (Server Side Request Forgery) hay còn gọi là tấn công yêu cầu giả mạo từ phía máy chủ cho phép kẻ tấn công thay đổi tham số được sử dụng trên ứng 
+dụng web để tạo hoặc kiểm soát các yêu cầu từ máy chủ dễ bị tấn công. 
 	
-	+Lấy được reverse shell. 
+   +Lấy được reverse shell: Reverse shell là 1 loại session shell (ngoài ra còn có web shell, bind shell,.. ) là shell có kết nối bắt nguồn từ 1 máy chủ đóng vai trò là target đến 1 máy chủ khác đóng vai trò host 
 	
 tuỳ theo đặc quyền của web server mà lỗ hổng này có thể cho phép kẻ tấn công thực hiện được các hành vi khác nhau. 
 
