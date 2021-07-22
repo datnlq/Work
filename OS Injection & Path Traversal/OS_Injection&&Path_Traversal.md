@@ -15,19 +15,29 @@
 ### -Hacker có thể làm gì :  
 -Lỗ hổng OS command injection có thể cho phép kẻ tấn công thực hiện các hành vi như: 
 	+Thực thi lệnh hệ thống. 
+	
 	+Làm tổn hại tới ứng dụng, server chạy ứng dụng cũng như dữ liệu trên đó. 
+	
 	+Thực hiện SSRF. 
+	
 	+Lấy được reverse shell. 
+	
 tuỳ theo đặc quyền của web server mà lỗ hổng này có thể cho phép kẻ tấn công thực hiện được các hành vi khác nhau. 
 
 ### -Ngăn chặn : 
 #### + Giai đoạn phát triển :  
-	~Hạn chế sử dụng cách lệnh gọi hệ thống trong code ứng dụng nếu không thực sự cần thiết. 
-	~Chuẩn hóa dữ liệu đầu vào: 
-	~Tạo WhiteList : Giá trị nhập vào nằm trong whitelist các giá trị được sử dụng 
-	~Tạo format input đầu vào bằng kiểu dữ liệu. 
-	~Input chỉ chứa các ký tự chữ và số, không có cú pháp hoặc khoảng trắng nào khác. 
-	~Chỉ sử dụng API bảo mật để thực thi các lệnh như execFile(). Không giống như các API khác, nó chấp nhận một lệnh làm tham số đầu tiên và một mảng các đối số dòng lệnh làm tham số hàm thứ hai. Hiện tượng này đảm bảo rằng bản thân lệnh phải là một chương trình hợp lệ, không liên quan đến đầu vào nguy hiểm. 
+
+  ~Hạn chế sử dụng cách lệnh gọi hệ thống trong code ứng dụng nếu không thực sự cần thiết. 
+	
+  ~Chuẩn hóa dữ liệu đầu vào: 
+	
+  ~Tạo WhiteList : Giá trị nhập vào nằm trong whitelist các giá trị được sử dụng 
+	
+  ~Tạo format input đầu vào bằng kiểu dữ liệu. 
+	
+  ~Input chỉ chứa các ký tự chữ và số, không có cú pháp hoặc khoảng trắng nào khác. 
+	
+  ~Chỉ sử dụng API bảo mật để thực thi các lệnh như execFile(). Không giống như các API khác, nó chấp nhận một lệnh làm tham số đầu tiên và một mảng các đối số dòng lệnh làm tham số hàm thứ hai. Hiện tượng này đảm bảo rằng bản thân lệnh phải là một chương trình hợp lệ, không liên quan đến đầu vào nguy hiểm. 
 
 #### - Giai đoạn thực tế
 
@@ -75,10 +85,13 @@ Path traversal( hay còn gọi là Directory traversal) là một lỗ hổng we
 -Về cơ bản thì 2 lỗ hồng này cùng xảy ra trong 1 ngữ cảnh tương tự nhau 
 
 -Một ví dụ đơn giản là việc lưu trữ ảnh trong hệ thống: 
-	+Giả sử những file ảnh được dev lưu trong thư mục /var/www/html/blog/public/img/ 
-	+Khi truy cập file avatar.jpg trên thư mực này dev có thể để link là GET photo/file?name=avatar.jpg. Lúc này webserver sẽ truy cập vào file ở đường dẫn /var/www/html/blog/public/img/avatar.jpg và trả về cho người dùng. 
-	+Nhưng thay vì việc truyền file name là avatar.jpg hacker có thể truyền tên file là ../../../../../../etc/password. Lúc này webserver sẽ truy cập và trả về file ở đường dẫn /var/www/html/blog/public/img/../../../../../../etc/password. Đường dẫn này tương đương với /etc/pasword nên webserver sẽ trả về file hệ thống cho chúng ta. 
-	+Tất nhiên trong thực tế tùy theo web server và config của chúng mà cách khai thác có thể khác, khó hơn chút và đa dạng hơn chút  
+  +Giả sử những file ảnh được dev lưu trong thư mục /var/www/html/blog/public/img/ 
+	
+  +Khi truy cập file avatar.jpg trên thư mực này dev có thể để link là GET photo/file?name=avatar.jpg. Lúc này webserver sẽ truy cập vào file ở đường dẫn /var/www/html/blog/public/img/avatar.jpg và trả về cho người dùng. 
+
+  +Nhưng thay vì việc truyền file name là avatar.jpg hacker có thể truyền tên file là ../../../../../../etc/password. Lúc này webserver sẽ truy cập và trả về file ở đường dẫn /var/www/html/blog/public/img/../../../../../../etc/password. Đường dẫn này tương đương với /etc/pasword nên webserver sẽ trả về file hệ thống cho chúng ta. 
+	
+  +Tất nhiên trong thực tế tùy theo web server và config của chúng mà cách khai thác có thể khác, khó hơn chút và đa dạng hơn chút  
 
 
 ### Ngăn chặn:  
