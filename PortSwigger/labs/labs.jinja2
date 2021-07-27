@@ -1,0 +1,21 @@
+# PortSwigger Web Security Academy Labs
+
+[PortSwigger Web Security Academy labs](https://portswigger.net/web-security)
+grouped by difficulty level and topic.
+
+{% for level, topics in collection.items() %}
+## {{ level }}
+
+{% for topic, labs in topics.items() %}
+### {{ topic }}
+{% for lab in labs %}
+[{{ lab.get("title") }}]({{ lab.get("url") }}) 
+{%- if include_status %}
+ **{{ lab.get("status") }}**
+{%- endif %}
+
+{% endfor %}
+
+{% endfor %}
+
+{% endfor %}
