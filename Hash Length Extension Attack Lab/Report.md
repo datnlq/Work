@@ -1,7 +1,7 @@
 # Hash Length Extension Attack
 
 
-Bài lab này của SEED LABS nên yêu cần phải thực hiện setup môi trường và source phù hợp. Mình sẽ pass qua phần này nhé các bạn hãy tự tham khảo và thiết lập môi trường SeedLabs[https://seedsecuritylabs.org/Labs_16.04/PDF/Crypto_Hash_Length_Ext.pdf] tại đâyy.
+Bài lab này của SEED LABS nên yêu cần phải thực hiện setup môi trường và source phù hợp. Mình sẽ pass qua phần này nhé các bạn hãy tự tham khảo và thiết lập môi trường [SeedLabs](https://seedsecuritylabs.org/Labs_16.04/PDF/Crypto_Hash_Length_Ext.pdf) tại đâyy.
 ## Task 1: Send Request to List Files
 
 Task này yêu cầu chúng ta tạo ra 1 đường link có format :
@@ -32,7 +32,8 @@ http://www.seedlablenext.com:5000/?myname=datnlq&uid=1002&lstcmd=1
 
 Nếu thành công thì server sẽ trả về như sau.
 
-
+![image](https://github.com/datnlq/Source/blob/main/Hash%20Length%20Extention%20Attack%20Lab/image/server.jpg?raw=true)
+![image](https://github.com/datnlq/Source/blob/main/Hash%20Length%20Extention%20Attack%20Lab/image/web.jpg?raw=true)
 
 ## Task 2: Create Padding
 
@@ -105,6 +106,7 @@ http://www.seedlablenext.com:5000/?myname=datnlq&uid=1002
 &mac=971cec96e938ed24cd35362eac00e341e0103eba1d638fcb9835f1a199e16fd4
 
 ```
+![image](https://github.com/datnlq/Source/blob/main/Hash%20Length%20Extention%20Attack%20Lab/image/web_macnotvalied_task3.jpg?raw=true)
 Và chúng ta nhận được kết quả là không thể truy cập được. Task này cơ bản chỉ cho chúng ta thấy cách hoạt động của MAC như thê nào.
 
 ## Task 4: The Length Extension Attack
@@ -149,7 +151,7 @@ int main(int argc, const char *argv[])
 //gcc length_ext.c -o length_ext -lcrypto
 
 ```
-
+![image](https://github.com/datnlq/Source/blob/main/Hash%20Length%20Extention%20Attack%20Lab/image/web_mac_task3.jpg?raw=true)
 Và kết quả đã thành công, chúng ta đã tải được file secret.txt về.
 
 
@@ -184,9 +186,14 @@ Như vậy tính toàn vẹn của hàm sẽ được đảm bảo hơn.
 
 Đề kiểm chứng HMAC có thật sự chặn được hash length extension attack hay không thì chúng ta hãy làm như task4 để kiểm chứng xem .
 ```
-mac = (hmac.new(bytearray(key.encode('utf-8')),msg = message.encode('utf-8','surrogateescape'),digestmod=hashlib.sha256).hexdigest())
+mac = (hmac.new(bytearray(key.encode('utf-8')),
+msg = message.encode('utf-8','surrogateescape'),
+digestmod=hashlib.sha256).hexdigest())
+
+
 2704e930f1205bebe2ec87b0d73ec2d787faf5859e3ff3ccfe4311f9f05ef5ad
 ```
+![image](https://github.com/datnlq/Source/blob/main/Hash%20Length%20Extention%20Attack%20Lab/image/task5_hmac.jpg)
 
 Sau đó đưa vào chương trình sau để tiến hành hash length extension attack:
 
@@ -231,7 +238,9 @@ http://www.seedlablenext.com:5000/?myname=datnlq&uid=1002
 &lstcmd=1%80%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%01%30&download=secret.txt
 &mac=5f71f1e00832f3a3b3914abce57c056bef70483d8b58d03f73e18826cccc756c
 ```
+![image](https://github.com/datnlq/Source/blob/main/Hash%20Length%20Extention%20Attack%20Lab/image/task5_notvalie.jpg)
 Và kết quả trả về là không thành công. Điều đó có nghĩa là HMAC đã chặn được hash length extension attack
+
 
 HMAC không dễ bị length extension attack. Nó tính toán hàm băm hai lần. Một khóa bí mật ban đầu được sử dụng để tạo ra hai khóa khác được gọi là khóa bên trong và khóa bên ngoài.Thuật toán sẽ tạo một hàm băm bên trong đến từ thông báo và khóa đầu tiên. Lần hash thứ 2, HMAC được tạo từ kết quả băm bên trong và khóa bên ngoài, điều này làm cho nó miễn nhiễm với hash length extension attack 
 
