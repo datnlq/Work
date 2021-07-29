@@ -6,7 +6,8 @@ Bài lab này của SEED LABS nên yêu cần phải thực hiện setup môi tr
 
 Task này yêu cầu chúng ta tạo ra 1 đường link có format :
 ```
- http://www.seedlabhashlengthext.com:5000/?myname=<name>&uid=<need-to-fill>&lstcmd=1&mac=<need-to-calculate>
+ http://www.seedlabhashlengthext.com:5000/?myname=<name>&uid=<need-to-fill>&lstcmd=1
+ &mac=<need-to-calculate>
 ```
 Trong đó name là tên của người làm mỗi tên khác nhau sẽ cho ra kết quả khác nhau. uid sẽ được cung cấp trong file key.txt kèm trong source và mỗi uid sẽ đi kèm với 1 key tương ứng.
 mac là phần mà chúng ta cần tính toán sha256 từ 1 format khác cùng key, uid và name.
@@ -104,7 +105,7 @@ http://www.seedlablenext.com:5000/?myname=datnlq&uid=1002
 &mac=971cec96e938ed24cd35362eac00e341e0103eba1d638fcb9835f1a199e16fd4
 
 ```
-Và chúng ta nhận được kết quả này.
+Và chúng ta nhận được kết quả là không thể truy cập được. Task này cơ bản chỉ cho chúng ta thấy cách hoạt động của MAC như thê nào.
 
 ## Task 4: The Length Extension Attack
 
