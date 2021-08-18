@@ -122,6 +122,7 @@ Câu truy vấn trên có nghĩa là phần check released = 1 đã bị bỏ đ
 [SQL injection vulnerability allowing login bypass](https://portswigger.net/web-security/sql-injection/lab-login-bypass)
 
 
+
 [SQL injection UNION attack, determining the number of columns returned by the query](https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns)
 
 
